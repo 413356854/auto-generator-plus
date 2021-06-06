@@ -6,6 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class AutoGeneratorPlusApplicationTests {
 
+/*	@Autowired
+	private UserMapper userMapper;*/
+
 	@Test
 	void contextLoads() {
 	}
