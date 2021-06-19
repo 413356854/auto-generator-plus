@@ -6,7 +6,10 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
+import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
 
@@ -41,6 +44,7 @@ public class CodeGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
+        gc.setActiveRecord( true );
         String projectPath = System.getProperty("user.dir");
         //自定义文件命名，%s为实体属性
         gc.setServiceName( "%sService" );
@@ -57,12 +61,24 @@ public class CodeGenerator {
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("root");
+        dsc.setTypeConvert( new MySqlTypeConvert() {
+            // 自定义数据库表字段类型转换【可选】
+            @Override
+            public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
+                if("datetime".equals(fieldType)){
+                    //默认为LocalDateTime
+                    return DbColumnType.DATE;
+                }else {
+                    return super.processTypeConvert(globalConfig,fieldType);
+                }
+            }
+        } );
         mpg.setDataSource(dsc);
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName("demo");
-        pc.setParent("com.example.autogeneratorplus");
+        pc.setParent("com.example.autogeneratorplus.demo");
+//        pc.setModuleName("demo");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
