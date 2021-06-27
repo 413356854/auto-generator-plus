@@ -24,7 +24,7 @@ public class Swagger2Config {
                 .build().apiInfo(new ApiInfoBuilder()
                         .title("title")
                         .description("description")
-                        .version("9.0")
+                        .version("2.0")
                         .contact(new Contact("name","url","email"))
                         .license("license")
                         .licenseUrl("licenseUrl")
