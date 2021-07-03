@@ -1,4 +1,4 @@
-package com.example.autogeneratorplus.generator.template;
+package {{parentPackage}}.{{module}}.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.annotation.DbType;
@@ -18,23 +18,23 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource("classpath:db-demo.properties")
-@MapperScan(basePackages = {"com.example.autogeneratorplus.demo.mapper"},
-        sqlSessionTemplateRef = "demoSqlSessionTemplate")
+@PropertySource("classpath:db-{{module}}.properties")
+@MapperScan(basePackages = {"{{parentPackage}}.{{module}}.mapper"},
+        sqlSessionTemplateRef = "{{module}}SqlSessionTemplate")
 public class DataSourceConfig {
-    private final static String ENTITY_PACKAGE = "com.example.autogeneratorplus.demo.entity";
-    private final static String XML_PATH = "classpath*:com/example/autogeneratorplus/demo/mapper/xml/*.xml";
-    private final static String TYPE_ENUMS_PACKAGE = "com.example.autogeneratorplus.demo.**";
+    private final static String ENTITY_PACKAGE = "{{parentPackage}}.{{module}}.entity";
+    private final static String XML_PATH = "classpath*:{{parentPath}}/{{module}}/mapper/xml/*.xml";
+    private final static String TYPE_ENUMS_PACKAGE = "{{parentPackage}}.{{module}}.**";
 
-    @Bean(name = "demoDataSource")
+    @Bean(name = "{{module}}DataSource")
     @ConfigurationProperties(prefix = "druid.datasource")
     public DataSource druidDataSource() {
         DruidDataSource druidDataSource = new DruidDataSource();
         return druidDataSource;
     }
 
-    @Bean(name = "demoSqlSessionFactory")
-    public SqlSessionFactory demoSqlSessionFactory(@Qualifier("demoDataSource") DataSource dataSource)
+    @Bean(name = "{{module}}SqlSessionFactory")
+    public SqlSessionFactory {{module}}SqlSessionFactory(@Qualifier("{{module}}DataSource") DataSource dataSource)
             throws Exception {
         MybatisSqlSessionFactoryBean bean = new MybatisSqlSessionFactoryBean();
         bean.setDataSource(dataSource);
@@ -49,9 +49,9 @@ public class DataSourceConfig {
         return bean.getObject();
     }
 
-    @Bean(name = "demoSqlSessionTemplate")
+    @Bean(name = "{{module}}SqlSessionTemplate")
     public SqlSessionTemplate sqlSessionTemplate(
-            @Qualifier("demoSqlSessionFactory") SqlSessionFactory sqlSessionFactory){
+            @Qualifier("{{module}}SqlSessionFactory") SqlSessionFactory sqlSessionFactory){
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 

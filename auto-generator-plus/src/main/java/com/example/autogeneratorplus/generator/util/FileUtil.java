@@ -24,7 +24,7 @@ public class FileUtil {
         return null;
     }
 
-    public static void writeFile(String filePath,List<String> lines){
+    public static boolean writeFile(String filePath,List<String> lines){
         try {
             FileWriter writer = new FileWriter(filePath);
             BufferedWriter buffered = new BufferedWriter(writer);
@@ -34,9 +34,27 @@ public class FileUtil {
             }
             buffered.close();
             writer.close();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    public static boolean createFile(String dirPath,String fileName) throws IOException {
+        File file = new File(dirPath);
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        if (dirPath.lastIndexOf("/")!=dirPath.length()-1) {
+            dirPath += "/";
+        }
+        file = new File(dirPath+fileName);
+        if(!file.exists()){
+            file.createNewFile();
+            return true;
+        }
+        return false;
     }
 
 
@@ -44,17 +62,11 @@ public class FileUtil {
         String basePath = System.getProperty("user.dir");
         String filePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/DataSourceConfig.tp";
         List<String> strings = readFile(filePath);
-        filePath = basePath + "/src/main/java/com/example/autogeneratorplus/demo/test/";
+        String dirPath = basePath + "/src/main/java/com/example/autogeneratorplus/demo/test/";
         String fileName = "DataSourceConfig.java";
-        File file = new File(filePath);
-        if(!file.exists()){
-            file.mkdirs();
-        }
-        file = new File(filePath+fileName);
-        if(!file.exists()){
-            file.createNewFile();
-        }
-        writeFile(filePath+fileName,strings);
+        createFile(dirPath, fileName);
+        writeFile(dirPath+fileName,strings);
+
 
 
     }
