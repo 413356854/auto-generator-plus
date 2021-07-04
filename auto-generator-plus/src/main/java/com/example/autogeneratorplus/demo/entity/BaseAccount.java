@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author luolita
- * @since 2021-06-23
+ * @since 2021-07-04
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,6 +22,11 @@ import lombok.EqualsAndHashCode;
 public class BaseAccount extends Model<BaseAccount> {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 自增ID
+     */
+    private Integer id;
 
     /**
      * 用户ID
@@ -48,6 +53,8 @@ public class BaseAccount extends Model<BaseAccount> {
     private Date updateTime;
 
 
+    public static final String ID = "id";
+
     public static final String USER_ID = "user_id";
 
     public static final String CURRENCY_ID = "currency_id";
@@ -62,7 +69,7 @@ public class BaseAccount extends Model<BaseAccount> {
 
     @Override
     protected Serializable pkVal() {
-        return null;
+        return this.id;
     }
 
 }
