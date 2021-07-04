@@ -1,7 +1,6 @@
 package com.example.autogeneratorplus.generator;
 
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.example.autogeneratorplus.demo.entity.BaseAccount;
+import com.example.autogeneratorplus.generator.model.InterfaceConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,26 +13,29 @@ import java.lang.reflect.Modifier;
 public class InterfaceGenerator {
 
     public static void main(String[] args) {
-        // 包配置
-        PackageConfig pc = new PackageConfig();
-        pc.setParent("com.example.autogeneratorplus.demo");
-        Class objClass = BaseAccount.class;
-        //接口生成
-        createList(pc,objClass);
+        // 参数配置
+        InterfaceConfig config = new InterfaceConfig();
+        String basePath = System.getProperty("user.dir");
+        config.setBasePath(basePath);
+        config.setParentPackage("com.example.autogeneratorplus");
+        config.setModule("demo");
+
+        //生成接口代码
+        generate(config);
     }
 
-    private static void createList(PackageConfig pc,Class objClass){
+    private static void generate(InterfaceConfig config){
         //根目录
         String projectPath = System.getProperty("user.dir");
         //模块路径
-        String parentPath = "/src/main/java/"+pc.getParent().replace(".", "/");
+        String parentPath = "";//"/src/main/java/"+pc.getParent().replace(".", "/");
         //dto文件路径
         String dtoPath = projectPath + parentPath + "/dto";
         //创建dto文件
-        createFile(dtoPath,objClass.getSimpleName() + "Dto.java");
+//        createFile(dtoPath,objClass.getSimpleName() + "Dto.java");
 
         System.out.println(dtoPath);
-        Field[] fields = objClass.getDeclaredFields();
+        Field[] fields = {};//objClass.getDeclaredFields();
         for (Field field : fields) {
             //过滤static修饰
             if (Modifier.isStatic(field.getModifiers())) {
