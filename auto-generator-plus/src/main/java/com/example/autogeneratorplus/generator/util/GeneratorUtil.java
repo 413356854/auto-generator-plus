@@ -29,38 +29,16 @@ public class GeneratorUtil {
         }
         //写目标文件
         boolean flag = FileUtil.createFile(dirPath, fileName);
-        if (!flag) {
-            System.out.println("文件已存在：\n"+dirPath+fileName);
+        if (flag) {
+            FileUtil.writeFile(dirPath+fileName,codes);
+        } else {
+            System.out.println("文件已存在：\n" + dirPath + fileName);
         }
-        FileUtil.writeFile(dirPath+fileName,codes);
     }
 
 
     public static void main(String[] args) {
-        String filePath = "C:\\Users\\ljf\\Documents\\git-exworth_chainwallet\\chainwallet\\wallet_chainwallet\\chainwallet\\provider\\executor\\src\\main\\java\\com\\chain\\chainwallet\\entity\\RechargeWallet.java";
-        List<String> strings = FileUtil.readFile(filePath);
 
-        String className = null;
-        for (String javaText : strings) {
-            className = StringUtil.matcher(".*class\\s+(\\w+)[\\s+extends.*|\\s+implements.*|\\s*\\{]", javaText);
-            if (className!=null) {
-                break;
-            }
-        }
-        System.out.println(className);
-        String annoTemp,anno = null,parem;
-        for (String javaText : strings) {//     * 平台表ID
-            annoTemp = StringUtil.matcher("\\s+\\*\\s*(.{2,})\\s*", javaText);
-            if (annoTemp!=null) {
-                anno = annoTemp;
-            }
-            parem = StringUtil.matcher("\\s+(private\\s+\\w+\\s+\\w+)\\s*;\\s*", javaText);
-            if (parem!=null) {
-                System.out.println(anno);
-                System.out.println(parem);
-                anno = null;
-            }
-        }
     }
     
 }

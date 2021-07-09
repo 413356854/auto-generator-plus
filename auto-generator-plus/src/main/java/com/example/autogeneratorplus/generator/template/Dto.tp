@@ -1,12 +1,9 @@
-package com.example.autogeneratorplus.generator.template;
+package {{parentPackage}}.{{module}}.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class Dto {
-
-    @ApiModelProperty("姓名")
-    private String name;
-
+public class {{entityName}}Dto {
+{{dtoParamsLine}}
 }
