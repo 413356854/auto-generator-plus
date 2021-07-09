@@ -2,6 +2,7 @@ package {{parentPackage}}.{{module}}.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+{{import}}
 
 @Data
 public class {{entityName}}Dto {

@@ -2,6 +2,9 @@ package com.example.autogeneratorplus.generator;
 
 import com.example.autogeneratorplus.generator.model.DataSourceConfigConfig;
 import com.example.autogeneratorplus.generator.util.GeneratorUtil;
+import com.example.autogeneratorplus.generator.util.MapUtil;
+
+import java.util.Map;
 
 public class DataSourceConfigGenerator {
 
@@ -27,7 +30,8 @@ public class DataSourceConfigGenerator {
                 + config.getParentPath()+"/"+config.getModule()+"/config/";
         String fileName = "DataSourceConfig.java";
 
-        GeneratorUtil.generatorNewFile(filePath,config,dirPath,fileName);
+        Map<String, String> map = MapUtil.toMap(config);
+        GeneratorUtil.generatorNewFile(filePath,map,dirPath,fileName);
     }
 
 

@@ -2,6 +2,9 @@ package com.example.autogeneratorplus.generator;
 
 import com.example.autogeneratorplus.generator.model.Swagger2ConfigConfig;
 import com.example.autogeneratorplus.generator.util.GeneratorUtil;
+import com.example.autogeneratorplus.generator.util.MapUtil;
+
+import java.util.Map;
 
 public class Swagger2ConfigGenerator {
 
@@ -27,7 +30,8 @@ public class Swagger2ConfigGenerator {
                 + config.getParentPath()+"/"+config.getModule()+"/config/";
         String fileName = "Swagger2Config.java";
 
-        GeneratorUtil.generatorNewFile(filePath,config,dirPath,fileName);
+        Map<String, String> map = MapUtil.toMap(config);
+        GeneratorUtil.generatorNewFile(filePath,map,dirPath,fileName);
     }
 
 
