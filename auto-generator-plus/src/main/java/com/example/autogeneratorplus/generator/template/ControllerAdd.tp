@@ -1,8 +1,8 @@
     @ApiOperation(value = "新增", response = {{entityName}}.class)
     @PostMapping("/add")
-    public Object add(@RequestBody UserDto dto) {
+    public Object add(@RequestBody {{entityName}}Dto dto) {
         {{entityName}} entity = new {{entityName}}();
         BeanUtils.copyProperties(dto, entity);
-        userService.save(entity);
+        {{lowercaseEntityName}}Service.save(entity);
         return entity;
     }

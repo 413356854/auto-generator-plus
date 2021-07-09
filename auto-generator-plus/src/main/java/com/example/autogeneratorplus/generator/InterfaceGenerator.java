@@ -47,6 +47,8 @@ public class InterfaceGenerator {
         GeneratorUtil.generatorNewFile(filePath,map,dirPath,fileName);
 
         //添加controller代码
+        map.put("lowercaseEntityName", config.getEntityName().substring(0,1).toLowerCase()
+                        +config.getEntityName().substring(1));
         String dtFilePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/ControllerAdd.tp";
         String cnFilePath = config.getBasePath() + "/src/main/java/"
                 + config.getParentPath()+"/"+config.getModule()+"/controller/"

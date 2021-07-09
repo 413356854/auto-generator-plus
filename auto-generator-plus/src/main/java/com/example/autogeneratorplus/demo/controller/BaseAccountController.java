@@ -1,8 +1,9 @@
 package com.example.autogeneratorplus.demo.controller;
 
 
+import com.example.autogeneratorplus.demo.service.BaseAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -17,5 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/base-account")
 public class BaseAccountController {
 
-}
+    @Autowired
+    private BaseAccountService baseAccountService;
 
+    
+}

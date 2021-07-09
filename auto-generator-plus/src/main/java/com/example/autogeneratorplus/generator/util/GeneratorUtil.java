@@ -52,9 +52,9 @@ public class GeneratorUtil {
             String code = codes.get(i);
             if(code.contains("}")){
                 int index = code.lastIndexOf("}");
-                codes.remove(i);
                 code = code.substring(0, index) + builder.toString() + code.substring(index);
                 codes.set(i, code);
+                break;
             }
         }
         FileUtil.writeFile(filePath,codes);
