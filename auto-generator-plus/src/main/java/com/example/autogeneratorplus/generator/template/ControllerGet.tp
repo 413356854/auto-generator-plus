@@ -1,0 +1,8 @@
+    @ApiOperation(value = "根据ID查询记录", response = {{entityName}}Vo.class)
+    @PostMapping("/getById")
+    public Object getById(@RequestParam Integer id) {
+        {{entityName}} entity = {{lowercaseEntityName}}Service.getById(id);
+        {{entityName}}Vo vo = new {{entityName}}Vo();
+        BeanUtils.copyProperties(entity, vo);
+        return vo;
+    }

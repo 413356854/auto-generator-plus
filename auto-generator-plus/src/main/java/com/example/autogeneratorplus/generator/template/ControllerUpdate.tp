@@ -1,0 +1,8 @@
+    @ApiOperation(value = "根据ID修改记录", response = Boolean.class)
+    @PostMapping("/updateById")
+    public Object updateById(@RequestBody {{entityName}}Dto dto) {
+        {{entityName}} entity = new {{entityName}}();
+        BeanUtils.copyProperties(dto, entity);
+        boolean flag = {{lowercaseEntityName}}Service.updateById(entity);
+        return flag;
+    }

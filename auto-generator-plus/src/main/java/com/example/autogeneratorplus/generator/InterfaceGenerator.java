@@ -24,8 +24,13 @@ public class InterfaceGenerator {
         config.setEntityName("BaseAccount");
 
         //生成接口代码
-        generateAdd(config);
+//        generateAdd(config);
+//        generateDelete(config);
+//        generateUpdate(config);
+//        generateGet(config);
+        generateList(config);
     }
+
 
     private static void generateAdd(InterfaceConfig config) throws Exception {
         //参数
@@ -88,7 +93,7 @@ public class InterfaceGenerator {
                 }
             }
         }
-        map.put("dtoParamsLine",builder.toString());
+        map.put("paramsLine",builder.toString());
         //引用
         if (hasBigDecimal) {
             importBuilder.append("\n");
@@ -99,6 +104,125 @@ public class InterfaceGenerator {
             importBuilder.append("import java.util.Date;");
         }
         map.put("import",importBuilder.toString());
+    }
+
+    private static void generateDelete(InterfaceConfig config) throws Exception {
+        //参数
+        Map<String, String> map = MapUtil.toMap(config);
+        map.put("lowercaseEntityName", config.getEntityName().substring(0,1).toLowerCase()
+                +config.getEntityName().substring(1));
+
+        //读取模板文本
+        String basePath = System.getProperty("user.dir");
+        String dtFilePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/ControllerDelete.tp";
+        //添加controller代码
+        String cnFilePath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/controller/"
+                + config.getEntityName()+"Controller.java";
+        GeneratorUtil.generatorAddLine(dtFilePath,map,cnFilePath);
+    }
+
+    private static void generateUpdate(InterfaceConfig config) throws Exception {
+        //参数
+        Map<String, String> map = MapUtil.toMap(config);
+        //读取entity参数复制到dto
+        String entityFilePath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/entity/"
+                + config.getEntityName() + ".java";
+        readParamsToLine(entityFilePath, map);
+
+        //读取dto模板文本
+        String basePath = System.getProperty("user.dir");
+        String filePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/Dto.tp";
+        //写目标文件
+        String dirPath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/dto/";
+        String fileName = config.getEntityName()+"Dto.java";
+        //写Dto
+        GeneratorUtil.generatorNewFile(filePath,map,dirPath,fileName);
+
+        //添加controller代码
+        map.put("lowercaseEntityName", config.getEntityName().substring(0,1).toLowerCase()
+                +config.getEntityName().substring(1));
+        String dtFilePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/ControllerUpdate.tp";
+        String cnFilePath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/controller/"
+                + config.getEntityName()+"Controller.java";
+        GeneratorUtil.generatorAddLine(dtFilePath,map,cnFilePath);
+    }
+
+    private static void generateGet(InterfaceConfig config) throws Exception {
+        //参数
+        Map<String, String> map = MapUtil.toMap(config);
+        //读取entity参数复制到vo
+        String entityFilePath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/entity/"
+                + config.getEntityName() + ".java";
+        readParamsToLine(entityFilePath, map);
+
+        //读取dto模板文本
+        String basePath = System.getProperty("user.dir");
+        String filePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/Vo.tp";
+        //写目标文件
+        String dirPath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/vo/";
+        String fileName = config.getEntityName()+"Vo.java";
+        //写vo
+        GeneratorUtil.generatorNewFile(filePath,map,dirPath,fileName);
+
+        //添加controller代码
+        map.put("lowercaseEntityName", config.getEntityName().substring(0,1).toLowerCase()
+                +config.getEntityName().substring(1));
+        String dtFilePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/ControllerGet.tp";
+        String cnFilePath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/controller/"
+                + config.getEntityName()+"Controller.java";
+        GeneratorUtil.generatorAddLine(dtFilePath,map,cnFilePath);
+    }
+
+    private static void generateList(InterfaceConfig config) throws Exception {
+        //参数
+        Map<String, String> map = MapUtil.toMap(config);
+        //读取entity参数复制到dto
+        String entityFilePath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/entity/"
+                + config.getEntityName() + ".java";
+        readParamsToLine(entityFilePath, map);
+        addPageParams(map);
+
+        //读取dto模板文本
+        String basePath = System.getProperty("user.dir");
+        String filePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/ListDto.tp";
+        //写目标文件
+        String dirPath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/dto/";
+        String fileName = config.getEntityName()+"ListDto.java";
+        //写Dto
+        GeneratorUtil.generatorNewFile(filePath,map,dirPath,fileName);
+
+        //添加controller代码
+        map.put("lowercaseEntityName", config.getEntityName().substring(0,1).toLowerCase()
+                +config.getEntityName().substring(1));
+        String dtFilePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/ControllerList.tp";
+        String cnFilePath = config.getBasePath() + "/src/main/java/"
+                + config.getParentPath()+"/"+config.getModule()+"/controller/"
+                + config.getEntityName()+"Controller.java";
+        GeneratorUtil.generatorAddLine(dtFilePath,map,cnFilePath);
+    }
+
+    //读取entity，生成字段代码段
+    public static void addPageParams(Map<String, String> map){
+        String paramsLine = map.get("paramsLine");
+        StringBuilder builder = new StringBuilder(paramsLine);
+        builder.append("\n    @ApiModelProperty(\"");
+        builder.append("当前页");
+        builder.append("\")\n    ");
+        builder.append("private Integer page;\n");
+        builder.append("\n    @ApiModelProperty(\"");
+        builder.append("页数");
+        builder.append("\")\n    ");
+        builder.append("private Integer size;\n");
+        map.put("paramsLine",builder.toString());
     }
 
 }
