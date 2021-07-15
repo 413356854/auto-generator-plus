@@ -1,6 +1,6 @@
     @ApiOperation(value = "查询列表集", response = {{entityName}}.class)
     @PostMapping("/list")
-    public Object list(@RequestBody {{entityName}}ListDto dto) {
+    public Object list(@RequestBody {{entityName}}List{{dtoClassName}} dto) {
         QueryWrapper<{{entityName}}> wrapper = Wrappers.emptyWrapper();
         //TODO
         IPage page = new Page(dto.getPage(), dto.getSize());

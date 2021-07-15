@@ -1,5 +1,6 @@
 package com.example.autogeneratorplus.generator.model;
 
+import com.example.autogeneratorplus.generator.enums.DtoTypeEnum;
 import lombok.Data;
 
 @Data
@@ -12,6 +13,8 @@ public class SuperConfig {
     private String parentPath;
     //模块名 demo
     private String module;
+    // dto类型
+    private DtoTypeEnum dtoType = DtoTypeEnum.DTO;
 
     //父目录：parentPackage.replace(".","/")
     private void setParentPath(String parentPath){

@@ -1,10 +1,12 @@
 package com.example.autogeneratorplus.generator;
 
+import com.example.autogeneratorplus.generator.enums.DtoTypeEnum;
 import com.example.autogeneratorplus.generator.model.InterfaceConfig;
 import com.example.autogeneratorplus.generator.util.FileUtil;
 import com.example.autogeneratorplus.generator.util.GeneratorUtil;
 import com.example.autogeneratorplus.generator.util.MapUtil;
 import com.example.autogeneratorplus.generator.util.StringUtil;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -40,14 +42,16 @@ public class InterfaceGenerator {
                 + config.getParentPath()+"/"+config.getModule()+"/entity/"
                 + config.getEntityName() + ".java";
         readParamsToLine(entityFilePath, map);
+        map.put("dtoPackageName", config.getDtoType().getPackageName());
+        map.put("dtoClassName", config.getDtoType().getClassName());
 
         //读取dto模板文本
         String basePath = System.getProperty("user.dir");
         String filePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/Dto.tp";
         //写目标文件
         String dirPath = config.getBasePath() + "/src/main/java/"
-                + config.getParentPath()+"/"+config.getModule()+"/dto/";
-        String fileName = config.getEntityName()+"Dto.java";
+                + config.getParentPath()+"/"+config.getModule()+"/"+config.getDtoType().getPackageName()+"/";
+        String fileName = config.getEntityName()+config.getDtoType().getClassName()+".java";
         //写Dto
         GeneratorUtil.generatorNewFile(filePath,map,dirPath,fileName);
 
@@ -74,12 +78,18 @@ public class InterfaceGenerator {
             if (annoTemp!=null) {
                 anno = annoTemp;
             }
+            annoTemp = StringUtil.matcher("\\s+@ApiModelProperty\\(\"(.*)\"\\)\\s*", javaText);
+            if (annoTemp!=null) {
+                anno = annoTemp;
+            }
             parem = StringUtil.matcher("\\s+(private\\s+\\w+\\s+\\w+)\\s*;\\s*", javaText);
             if (parem!=null
                     &&!parem.contains("createTime")
                     &&!parem.contains("updateTime")) {
                 builder.append("\n    @ApiModelProperty(\"");
-                builder.append(anno);
+                if (anno!=null) {
+                    builder.append(anno);
+                }
                 builder.append("\")\n    ");
                 builder.append(parem);
                 builder.append(";\n");
@@ -195,8 +205,10 @@ public class InterfaceGenerator {
         String filePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/ListDto.tp";
         //写目标文件
         String dirPath = config.getBasePath() + "/src/main/java/"
-                + config.getParentPath()+"/"+config.getModule()+"/dto/";
-        String fileName = config.getEntityName()+"ListDto.java";
+                + config.getParentPath()+"/"+config.getModule()+"/"+config.getDtoType().getPackageName()+"/";
+        String fileName = config.getEntityName()+"List"+config.getDtoType().getClassName()+".java";
+        map.put("dtoPackageName", config.getDtoType().getPackageName());
+        map.put("dtoClassName", config.getDtoType().getClassName());
         //写Dto
         GeneratorUtil.generatorNewFile(filePath,map,dirPath,fileName);
 

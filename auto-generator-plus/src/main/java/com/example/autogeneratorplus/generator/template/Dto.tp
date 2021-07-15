@@ -1,10 +1,10 @@
-package {{parentPackage}}.{{module}}.dto;
+package {{parentPackage}}.{{module}}.{{dtoPackageName}};
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 {{import}}
 
 @Data
-public class {{entityName}}Dto {
+public class {{entityName}}{{dtoClassName}} {
 {{paramsLine}}
 }
