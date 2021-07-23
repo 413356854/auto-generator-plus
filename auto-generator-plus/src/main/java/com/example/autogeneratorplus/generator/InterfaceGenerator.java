@@ -140,14 +140,16 @@ public class InterfaceGenerator {
                 + config.getParentPath()+"/"+config.getModule()+"/entity/"
                 + config.getEntityName() + ".java";
         readParamsToLine(entityFilePath, map);
+        map.put("dtoPackageName", config.getDtoType().getPackageName());
+        map.put("dtoClassName", config.getDtoType().getClassName());
 
         //读取dto模板文本
         String basePath = System.getProperty("user.dir");
         String filePath = basePath + "/src/main/java/com/example/autogeneratorplus/generator/template/Dto.tp";
         //写目标文件
         String dirPath = config.getBasePath() + "/src/main/java/"
-                + config.getParentPath()+"/"+config.getModule()+"/dto/";
-        String fileName = config.getEntityName()+"Dto.java";
+                + config.getParentPath()+"/"+config.getModule()+"/"+config.getDtoType().getPackageName()+"/";
+        String fileName = config.getEntityName()+config.getDtoType().getClassName()+".java";
         //写Dto
         GeneratorUtil.generatorNewFile(filePath,map,dirPath,fileName);
 
